@@ -1,7 +1,5 @@
 import { History } from "../history/History"
 
-type RawHistory = History
-
 type RenderHistory = {
   history: {
     time: number
@@ -12,7 +10,7 @@ type RenderHistory = {
 }
 
 export class PostFormatter {
-  format(history: RawHistory): RenderHistory {
+  format(history: History): RenderHistory {
     return {
       history: history.getCurrentHistory(),
     }

@@ -1,13 +1,15 @@
 import { Answer, Note } from "./QuestionTypes"
+import { ToBridgeBindable } from "./Bridge"
 
+@ToBridgeBindable
 export class Controller {
   processUserInputs(answer: Answer, note: Note | undefined = undefined) {
-    // 处理用户当前输入
+    // TODO:处理用户当前输入
   }
   undoLastCommit() {
-    // 撤销上次输入, 回到上一个问题
+    // TODO:撤销上次输入, 回到上一个问题
   }
   pushToRender() {
-    // 发送到渲染进程
+    // TODO:发送到渲染进程
   }
 }

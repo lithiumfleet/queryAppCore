@@ -1,4 +1,4 @@
-import { QuestionID, Answer } from "../../QuestionTypes"
+import { QuestionID, Answer } from "../QuestionTypes"
 
 type RawUserInput = {
   timeStamp: number
@@ -26,7 +26,7 @@ export class UserInputFormatter {
         break
       default:
         throw Error(
-          `Unexpected number in answer from font: ${userInput.answer}`,
+          `[UserInputFormatter] Unexpected number in answer from font: ${userInput.answer}`,
         )
     }
 

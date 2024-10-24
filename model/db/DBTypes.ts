@@ -1,4 +1,4 @@
-import { Answer, QuestionID } from "../../../QuestionTypes"
+import { Answer, QuestionID } from "../../QuestionTypes"
 
 export type Notice = string
 

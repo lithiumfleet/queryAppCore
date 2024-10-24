@@ -1,12 +1,13 @@
 import { HistoryNode } from "./HistoryNode"
-import { QuestionID, Answer, Note } from "../../../QuestionTypes"
+import { QuestionID, Answer, Note } from "../../QuestionTypes"
 
 export class HistoryStack {
-  private items: HistoryNode[]
+  private items: HistoryNode[] = []
 
   getCurrentStack() {
     return this.items
   }
+
   push(
     time: number,
     qid: QuestionID,
@@ -20,7 +21,15 @@ export class HistoryStack {
       note,
     })
   }
+
   pop() {
-    return this.items.pop()
+    if (this.length == 0) {
+      throw Error("[HistoryStack] Pop error: stack is empty")
+    }
+    return this.items.pop() as HistoryNode
+  }
+
+  get length() {
+    return this.items.length
   }
 }

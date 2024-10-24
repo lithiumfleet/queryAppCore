@@ -1,9 +1,11 @@
 import { Notice, Question } from "./DBTypes"
-import { QuestionID } from "../../../QuestionTypes"
+import { QuestionID } from "../../QuestionTypes"
+import { ToBridgeBindable } from "../../Bridge"
 
+@ToBridgeBindable
 export class QuestionDB {
-  private questionDS: Map<QuestionID, Question>
-  private noticeDS: Map<QuestionID, Notice | null>
+  private questionDS: Map<QuestionID, Question> = new Map()
+  private noticeDS: Map<QuestionID, Notice | null> = new Map()
 
   constructor(
     questionDS: Map<QuestionID, Question>,
