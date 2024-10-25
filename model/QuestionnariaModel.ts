@@ -34,7 +34,7 @@ export class QuestionnaireModel {
     const nextQid = currentQuestion.jumpTable.get(answer)
     if (!nextQid) {
       throw Error(
-        `[Model] Current Question ID(${this.currentQid})'s jump table not match answer ${answer}`,
+        `[Model] Current Question ID(${this.currentQid})'s jump table not match answer "${answer}"`,
       )
     }
 
@@ -48,7 +48,10 @@ export class QuestionnaireModel {
   ) {
     // 加入历史, 设置并解析
     if (!this.currentQid) {
-      throw Error("[Model] currentQid is empty string.")
+      console.warn(
+        "[Model] currentQid is empty string or undefined. Redirecting to questionnaria A.",
+      )
+      this.currentQid = "BEG_A" as QuestionID
     }
     // @ts-ignore: bridge will init later
     this.bridge.call("History.commit", time, this.currentQid, answer, note)

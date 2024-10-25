@@ -10,7 +10,11 @@ import { BrowserWindow } from "electron"
 @ToBridgeBindable
 export class Controller {
   private formatter = new UserInputFormatter()
-  private poster: Poster = new Poster()
+  private poster: Poster
+
+  constructor(poster: Poster) {
+    this.poster = poster
+  }
 
   setMainWindow(window: BrowserWindow) {
     // 需要使用这个初始化Poster
@@ -48,6 +52,7 @@ export class Controller {
         this.bridge.call("QuestionnaireModel.setCurrentQid", nextQid)
         break
       default:
+        throw Error(`[Controller] Invaid action: ${userInput.action}`)
         break
     }
     this.syncRender()

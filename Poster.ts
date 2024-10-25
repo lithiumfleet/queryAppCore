@@ -1,6 +1,8 @@
 import { PostFormatter } from "./formatters/PosterFormatter"
 import { BrowserWindow } from "electron"
+import { ToBridgeBindable } from "./Bridge"
 
+@ToBridgeBindable
 export class Poster {
   private formatter = new PostFormatter()
   private mainWindow: BrowserWindow | undefined = undefined
@@ -11,7 +13,7 @@ export class Poster {
   }
 
   syncRender() {
-    // TODO:拉取当前问题和历史, 发送到渲染进程
+    // 拉取当前问题和历史, 发送到渲染进程
     // @ts-ignore: bridge will init later
     // Note: currentNotice: Notice | undefined
     const { currentQid, currentQuestion, currentNotice } = this.bridge.call(

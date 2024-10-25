@@ -13,7 +13,6 @@ Formatters, or you can say these are Protrol Adapters.
   timeStamp: number,
   action: string, // "Answer" | "Undo"
   data?: {
-    questionID: string,
     answer: string, // "True" | "False"
     note?: string
   }

@@ -7,11 +7,10 @@ export interface BridgeBindable {
 }
 
 export class ConcreteBridge implements Bridge {
-  private classJumpTable: Map<string, object> = new Map()
+  public classJumpTable: Map<string, object> = new Map()
 
-  register(cls: BridgeBindable) {
+  register(className: string, cls: BridgeBindable) {
     cls._bridge = this
-    const className = cls.constructor.name
     this.classJumpTable.set(className, cls)
   }
 
@@ -36,7 +35,9 @@ export class ConcreteBridge implements Bridge {
         )
       }
     } else {
-      throw Error(`[Bridge] Can not found ${registedClassName} in jumpTable`)
+      throw Error(
+        `[Bridge] Can not found ${registedClassName} in  classJumpTable`,
+      )
     }
   }
 }

@@ -1,5 +1,5 @@
 // This formatter belongs to Controller
-import { Action, Answer, parseEnumValue, QuestionID } from "../QuestionTypes"
+import { Action, Answer, parseEnumValue } from "../QuestionTypes"
 
 export type RawUserInput = {
   timeStamp: number
@@ -15,7 +15,6 @@ type UserInput = {
   timeStamp: number
   action: Action
   data?: {
-    questionID: QuestionID
     answer: Answer
     note?: string
   }
@@ -35,7 +34,6 @@ export class UserInputFormatter {
 
     // action: answer
     const data = {
-      questionID: userInput.data.questionID as QuestionID,
       answer: parseEnumValue(Answer, userInput.data.answer),
       note: userInput.data.note,
     }
