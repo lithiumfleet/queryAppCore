@@ -1,40 +1,48 @@
-import { QuestionID, Answer } from "../QuestionTypes"
+// This formatter belongs to Controller
+import { Action, Answer, parseEnumValue, QuestionID } from "../QuestionTypes"
 
-type RawUserInput = {
+export type RawUserInput = {
   timeStamp: number
-  questionID: string
-  answer: number
-  note?: string
+  action: string
+  data?: {
+    questionID: string
+    answer: string
+    note?: string
+  }
 }
 
 type UserInput = {
   timeStamp: number
-  questionID: QuestionID
-  answer: Answer
-  note: string | undefined
+  action: Action
+  data?: {
+    questionID: QuestionID
+    answer: Answer
+    note?: string
+  }
 }
 
 export class UserInputFormatter {
   format(userInput: RawUserInput): UserInput {
-    let ans: Answer
-    switch (userInput.answer) {
-      case 0:
-        ans = Answer.False
-        break
-      case 1:
-        ans = Answer.True
-        break
-      default:
-        throw Error(
-          `[UserInputFormatter] Unexpected number in answer from font: ${userInput.answer}`,
-        )
+    const action = parseEnumValue(Action, userInput.action)
+
+    // action: undo
+    if (!userInput.data) {
+      return {
+        timeStamp: userInput.timeStamp,
+        action,
+      }
     }
 
+    // action: answer
+    const data = {
+      questionID: userInput.data.questionID as QuestionID,
+      answer: parseEnumValue(Answer, userInput.data.answer),
+      note: userInput.data.note,
+    }
     return {
       timeStamp: userInput.timeStamp,
-      questionID: userInput.questionID,
-      answer: ans,
-      note: userInput.note,
+      action,
+      data,
     }
   }
 }

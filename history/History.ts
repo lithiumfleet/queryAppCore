@@ -24,8 +24,10 @@ export class History {
     if (this.history.length == 0) {
       throw Error(`[History] Current Stack is empty`)
     }
+
     const { qid } = this.history.pop()
     console.info(`[History] History undo. Question ID: ${qid}`)
+    return qid as QuestionID
   }
 
   getCurrentHistory() {

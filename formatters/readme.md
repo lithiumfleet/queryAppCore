@@ -4,41 +4,67 @@ Formatters, or you can say these are Protrol Adapters.
 
 # Protrols
 
-## Font
+## 1. Font to backend
 
-#### UserInput
+#### (From font)UserInput
 
 ```javascript
 {
-  timeStamp: string,
-  questionID: string,
-  answer: boolean,
-  note?: string
+  timeStamp: number,
+  action: "answer" | "undo",
+  data?: {
+    questionID: string,
+    answer: "true" | "false",
+    note?: string
+  }
 }
 ```
 
-## Backend
-
-#### RenderQuestion
+#### (To backend)UserInput
 
 ```javascript
 {
-  questionID: string,
-  content: string,
-  notice?: stirng
+  timeStamp: number,
+  action: Action,
+  data?: {
+    questionID: QuestionID,
+    answer: Answer,
+    note?: string
+  }
 }
 ```
 
-#### RenderHistory
+## 2. Backend to font
+
+#### (From backend)FontInfo
 
 ```javascript
 {
-  history: [
-    {
-      timeStamp: string,
-      questionID: string,
-      answer: boolean
-    }
-  ]
+  currentQuestion: Question
+  currentNotice: Notice | undefined
+  currentHistory: HistoryNode[]
+}
+```
+
+#### (To font)FontInfo
+
+```javascript
+{
+  currentQuestion: {
+    questionID: string,
+    content: string,
+  },
+  currentNotice: {
+    notice: string
+  },
+  currentHistory: {
+    history: [
+      {
+        timeStamp: string,
+        questionID: string,
+        answer: boolean
+      }
+    ]
+  }
 }
 ```

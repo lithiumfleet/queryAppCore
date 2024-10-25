@@ -1,10 +1,11 @@
 import { ToBridgeBindable } from "../Bridge"
 import { QuestionID } from "../QuestionTypes"
 import { Answer, Note } from "../QuestionTypes"
+import { Notice, Question } from "./db/DBTypes"
 
 @ToBridgeBindable
 export class QuestionnaireModel {
-  private currentQid: QuestionID = ""
+  private currentQid: QuestionID | undefined = undefined
 
   setCurrentQid(qid: QuestionID) {
     // 设置currentQis到下一个Qid
@@ -13,29 +14,61 @@ export class QuestionnaireModel {
   }
 
   getNextQid(answer: Answer) {
-    // TODO:解析下一个QuestionID
+    // 解析下一个QuestionID
+    // @ts-ignore: bridge will init later
+    const currentQuestion: Question | undefined = this.bridge.call(
+      "QuestionDB.getQuestion",
+      this.currentQid,
+    )
+    if (!currentQuestion) {
+      throw Error(
+        `[Model] Current Question ${this.currentQid} can not be found in QuestionDB`,
+      )
+    }
+
+    const nextQid = currentQuestion.jumpTable.get(answer)
+    if (!nextQid) {
+      throw Error(
+        `[Model] Current Question ID(${this.currentQid})'s jump table not match answer ${answer}`,
+      )
+    }
+
+    this.currentQid = nextQid
   }
 
-  processCommit(answer: Answer, note: Note | undefined = undefined) {
+  processCommit(
+    time: number,
+    answer: Answer,
+    note: Note | undefined = undefined,
+  ) {
     // 加入历史, 设置并解析
-    const currentTime = Date.now()
     if (!this.currentQid) {
       throw Error("[Model] currentQid is empty string.")
     }
     // @ts-ignore: bridge will init later
-    this.bridge.call(
-      "History.commit",
-      currentTime,
-      this.currentQid,
-      answer,
-      note,
-    )
+    this.bridge.call("History.commit", time, this.currentQid, answer, note)
     console.info(
-      `[Model] Commit to history: ${currentTime}\t${this.currentQid}\t${answer}\t${note}`,
+      `[Model] Commit to history: ${time}\t${this.currentQid}\t${answer}\t${note}`,
     )
   }
 
   getCurrentQuestionAndNotice() {
-    // TODO:给Poster调用
+    // 给Poster调用
+    // @ts-ignore: bridge will init later
+    const currentQuestion: Question | undefined = this.bridge.call(
+      "QuestionDB.getQuestion",
+      this.currentQid,
+    )
+    if (!currentQuestion) {
+      throw Error(
+        `[Model] Current Question ${this.currentQid} can not be found in QuestionDB`,
+      )
+    }
+    // @ts-ignore: bridge will init later
+    const currentNotice: Notice | undefined = this.bridge.call(
+      "QuestionDB.getNotice",
+      this.currentQid,
+    )
+    return { currentQuestion, currentNotice }
   }
 }
