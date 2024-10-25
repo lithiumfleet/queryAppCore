@@ -11,10 +11,10 @@ Formatters, or you can say these are Protrol Adapters.
 ```javascript
 {
   timeStamp: number,
-  action: "answer" | "undo",
+  action: string, // "Answer" | "Undo"
   data?: {
     questionID: string,
-    answer: "true" | "false",
+    answer: string, // "True" | "False"
     note?: string
   }
 }
@@ -54,17 +54,20 @@ Formatters, or you can say these are Protrol Adapters.
     questionID: string,
     content: string,
   },
-  currentNotice: {
-    notice: string
-  },
-  currentHistory: {
-    history: [
-      {
-        timeStamp: string,
-        questionID: string,
-        answer: boolean
-      }
-    ]
-  }
+  currentNotice?: string,
+  currentHistory: [
+    {
+      timeStamp: string,
+      questionID: string,
+      answer: string
+    }
+  ]
 }
+```
+
+This will be sent using webContents.
+
+```typescript
+// in Poster.ts
+this.mainWindow.webContents.send("sync:font-info", fontInfo)
 ```

@@ -1,25 +1,51 @@
-import { Action, Answer, Note, QuestionID } from "./QuestionTypes"
+import { Action, QuestionID } from "./QuestionTypes"
 import { ToBridgeBindable } from "./Bridge"
 import {
   RawUserInput,
   UserInputFormatter,
 } from "./formatters/UserInputFormatter"
 import { Poster } from "./Poster"
+import { BrowserWindow } from "electron"
 
 @ToBridgeBindable
 export class Controller {
   private formatter = new UserInputFormatter()
-  private poster = new Poster()
+  private poster: Poster = new Poster()
+
+  setMainWindow(window: BrowserWindow) {
+    // 需要使用这个初始化Poster
+    this.poster.setMainWindow(window)
+  }
 
   processUserInputs(rawUserInput: RawUserInput) {
-    // TODO:处理用户当前输入
+    // 处理用户当前输入
     const userInput = this.formatter.format(rawUserInput)
+    let nextQid: QuestionID | undefined = undefined
     switch (userInput.action) {
       case Action.Undo:
         this.undoLastCommit()
         break
       case Action.Answer:
-        // TODO HERE
+        if (!userInput.data) {
+          throw Error("[Model] userInput.data is undefined.")
+        }
+        // Save to history
+        // @ts-ignore: bridge will init later
+        this.bridge.call(
+          "QuestionnaireModel.processCommit",
+          userInput.timeStamp,
+          userInput.data.answer,
+          userInput.data.note,
+        )
+        // Get next question id
+        // @ts-ignore: bridge will init later
+        nextQid = this.bridge.call(
+          "QuestionnaireModel.getNextQid",
+          userInput.data.answer,
+        )
+        // Set next question id
+        // @ts-ignore: bridge will init later
+        this.bridge.call("QuestionnaireModel.setCurrentQid", nextQid)
         break
       default:
         break
@@ -36,8 +62,10 @@ export class Controller {
     console.info(`[Controller] Undo last time, back to ${qid}`)
   }
 
-  syncRender() {
-    this.poster.pushToRender()
-    console.info("[Controller] Sync with renderer")
+  private syncRender() {
+    console.info(
+      "[Controller] Generating FontInfo from backend, syncing with renderer",
+    )
+    return this.poster.syncRender()
   }
 }

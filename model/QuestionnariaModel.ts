@@ -7,8 +7,13 @@ import { Notice, Question } from "./db/DBTypes"
 export class QuestionnaireModel {
   private currentQid: QuestionID | undefined = undefined
 
-  setCurrentQid(qid: QuestionID) {
+  setCurrentQid(qid: QuestionID | undefined) {
     // 设置currentQis到下一个Qid
+    if (!qid) {
+      console.warn(
+        `[Model] You are trying setting currentQid from ${this.currentQid} to undefined`,
+      )
+    }
     console.info(`[Model] set qid to ${qid}`)
     this.currentQid = qid
   }
@@ -33,7 +38,7 @@ export class QuestionnaireModel {
       )
     }
 
-    this.currentQid = nextQid
+    return nextQid as QuestionID
   }
 
   processCommit(
@@ -69,6 +74,6 @@ export class QuestionnaireModel {
       "QuestionDB.getNotice",
       this.currentQid,
     )
-    return { currentQuestion, currentNotice }
+    return { currentQid: this.currentQid, currentQuestion, currentNotice }
   }
 }

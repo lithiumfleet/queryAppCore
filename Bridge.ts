@@ -2,15 +2,15 @@ interface Bridge {
   call(registedName: string, ...args: unknown[]): unknown
 }
 
-interface BridgeBindable {
-  bridge: ConcreteBridge
+export interface BridgeBindable {
+  _bridge: ConcreteBridge | undefined
 }
 
 export class ConcreteBridge implements Bridge {
   private classJumpTable: Map<string, object> = new Map()
 
   register(cls: BridgeBindable) {
-    cls.bridge = this
+    cls._bridge = this
     const className = cls.constructor.name
     this.classJumpTable.set(className, cls)
   }

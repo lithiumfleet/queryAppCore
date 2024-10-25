@@ -1,8 +1,8 @@
 export type QuestionID = string
 
 export enum Action {
-  Answer = "answer",
-  Undo = "undo",
+  Answer = "Answer",
+  Undo = "Undo",
 }
 
 function isEnumValue<T extends object>(
