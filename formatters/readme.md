@@ -20,6 +20,14 @@ Formatters, or you can say these are Protrol Adapters.
 }
 ```
 
+Process with ipc in main process:
+
+```typescript
+ipcMain.on("user:input", (_, data) => {
+  controller.processUserInputs(data)
+})
+```
+
 #### (To backend)UserInput
 
 ```javascript
