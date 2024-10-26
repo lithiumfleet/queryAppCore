@@ -33,6 +33,10 @@ export class QuestionDB {
     this.noticeDS.set("A3", "这里应该是A2到A4")
     this.noticeDS.set("A4", "这里应该是A2到A4")
     this.noticeDS.set("A7", "你完了, 重开吧")
+
+    this.questionDS.set("BEG_B", Q("这是B问卷封面", "B1", "B1"))
+    this.questionDS.set("B1", Q("选啥都直接结束", "END_B", "END_B"))
+    this.questionDS.set("END_B", Q("你重开了", "END_B", "END_B"))
   }
 
   getQuestion(qid: QuestionID) {

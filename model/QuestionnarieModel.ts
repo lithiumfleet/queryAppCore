@@ -1,7 +1,7 @@
 import { ToBridgeBindable } from "../Bridge"
 import { isEnumValue, QuestionID } from "../QuestionTypes"
 import { Answer, Note } from "../QuestionTypes"
-import { Notice, Question, QuestionnariaCtlToken } from "./db/DBTypes"
+import { Notice, Question, QuestionnarieCtlToken } from "./db/DBTypes"
 
 @ToBridgeBindable
 export class QuestionnaireModel {
@@ -18,12 +18,12 @@ export class QuestionnaireModel {
     this.currentQid = qid
   }
 
-  setQuestionnaria(name: "A" | "B") {
-    console.info(`[Model] Setting current questionnaria to ${name}`)
-    if (name === "A") this.currentQid = QuestionnariaCtlToken.BEGA
-    else if (name === "B") this.currentQid = QuestionnariaCtlToken.BEGB
+  setQuestionnarie(name: "A" | "B") {
+    console.info(`[Model] Setting current questionnarie to ${name}`)
+    if (name === "A") this.currentQid = QuestionnarieCtlToken.BEGA
+    else if (name === "B") this.currentQid = QuestionnarieCtlToken.BEGB
     else {
-      throw Error(`[Model] "${name}" is not a name of questionnarias`)
+      throw Error(`[Model] "${name}" is not a name of questionnaries`)
     }
   }
 
@@ -58,10 +58,10 @@ export class QuestionnaireModel {
     // 加入历史, 设置并解析
     if (!this.currentQid) {
       throw Error(
-        "[Model] currentQid is empty string or undefined. Try calling setQuestionnaria before answer the questions.",
+        "[Model] currentQid is empty string or undefined. Try calling setQuestionnarie before answer the questions.",
       )
     }
-    if (isEnumValue(QuestionnariaCtlToken, this.currentQid)) {
+    if (isEnumValue(QuestionnarieCtlToken, this.currentQid)) {
       console.info(
         `[Model] ${this.currentQid} is special token, will not commit to history`,
       )

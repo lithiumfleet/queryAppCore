@@ -9,7 +9,7 @@ export type Question = {
   jumpTable: JumpTable
 }
 
-export enum QuestionnariaCtlToken {
+export enum QuestionnarieCtlToken {
   BEGA = "BEG_A",
   ENDA = "END_A",
   BEGB = "BEG_B",

@@ -11,7 +11,7 @@ Formatters, or you can say these are Protrol Adapters.
 ```javascript
 {
   timeStamp: number,
-  action: string, // "Answer" | "Undo" | "GetQuestionnariaA" | "GetQuestionnariaB"
+  action: string, // "Answer" | "Undo" | "GetQuestionnarieA" | "GetQuestionnarieB"
   data?: {
     answer: string, // "True" | "False"
     note?: string

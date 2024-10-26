@@ -3,8 +3,8 @@ export type QuestionID = string
 export enum Action {
   Answer = "Answer",
   Undo = "Undo",
-  GetQuestionnariaA = "GetQuestionnariaA",
-  GetQuestionnariaB = "GetQuestionnariaB",
+  GetQuestionnarieA = "GetQuestionnarieA",
+  GetQuestionnarieB = "GetQuestionnarieB",
 }
 
 export function isEnumValue<T extends object>(

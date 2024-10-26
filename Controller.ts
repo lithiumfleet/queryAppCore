@@ -30,14 +30,14 @@ export class Controller {
         this.undoLastCommit()
         break
 
-      case Action.GetQuestionnariaA:
+      case Action.GetQuestionnarieA:
         // @ts-ignore: bridge will init later
-        this.bridge.call("QuestionnaireModel.setQuestionnaria", "A")
+        this.bridge.call("QuestionnaireModel.setQuestionnarie", "A")
         break
 
-      case Action.GetQuestionnariaB:
+      case Action.GetQuestionnarieB:
         // @ts-ignore: bridge will init later
-        this.bridge.call("QuestionnaireModel.setQuestionnaria", "B")
+        this.bridge.call("QuestionnaireModel.setQuestionnarie", "B")
         break
 
       case Action.Answer:
