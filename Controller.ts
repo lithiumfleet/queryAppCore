@@ -29,6 +29,17 @@ export class Controller {
       case Action.Undo:
         this.undoLastCommit()
         break
+
+      case Action.GetQuestionnariaA:
+        // @ts-ignore: bridge will init later
+        this.bridge.call("QuestionnaireModel.setQuestionnaria", "A")
+        break
+
+      case Action.GetQuestionnariaB:
+        // @ts-ignore: bridge will init later
+        this.bridge.call("QuestionnaireModel.setQuestionnaria", "B")
+        break
+
       case Action.Answer:
         if (!userInput.data) {
           throw Error("[Model] userInput.data is undefined.")
@@ -51,6 +62,7 @@ export class Controller {
         // @ts-ignore: bridge will init later
         this.bridge.call("QuestionnaireModel.setCurrentQid", nextQid)
         break
+
       default:
         throw Error(`[Controller] Invaid action: ${userInput.action}`)
         break
@@ -61,10 +73,14 @@ export class Controller {
   undoLastCommit() {
     // 撤销上次输入, 回到上一个问题, 同步Model
     // @ts-ignore: bridge will init later
-    const qid: QuestionID = this.bridge.call("History.undo")
-    // @ts-ignore: bridge will init later
-    this.bridge.call("QuestionnaireModel.setCurrentQid", qid)
-    console.info(`[Controller] Undo last time, back to ${qid}`)
+    const qid: QuestionID | undefined = this.bridge.call("History.undo")
+    if (qid) {
+      // @ts-ignore: bridge will init later
+      this.bridge.call("QuestionnaireModel.setCurrentQid", qid)
+      console.info(`[Controller] Undo last time, back to ${qid}`)
+    } else {
+      console.info(`[Controller] Nothing to undo`)
+    }
   }
 
   private syncRender() {

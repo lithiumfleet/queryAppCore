@@ -22,7 +22,8 @@ export class History {
   undo() {
     // 撤回
     if (this.history.length == 0) {
-      throw Error(`[History] Current Stack is empty`)
+      console.warn(`[History] Current Stack is empty`)
+      return undefined
     }
 
     const { qid } = this.history.pop()

@@ -37,5 +37,6 @@ export class Poster {
       )
     }
     this.mainWindow.webContents.send("sync:font-info", fontInfo)
+    console.info("[Poster] Finish sync\n")
   }
 }

@@ -5,7 +5,6 @@ export type RawUserInput = {
   timeStamp: number
   action: string
   data?: {
-    questionID: string
     answer: string
     note?: string
   }

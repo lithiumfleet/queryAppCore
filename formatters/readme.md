@@ -11,7 +11,7 @@ Formatters, or you can say these are Protrol Adapters.
 ```javascript
 {
   timeStamp: number,
-  action: string, // "Answer" | "Undo"
+  action: string, // "Answer" | "Undo" | "GetQuestionnariaA" | "GetQuestionnariaB"
   data?: {
     answer: string, // "True" | "False"
     note?: string
@@ -34,7 +34,6 @@ ipcMain.on("user:input", (_, data) => {
   timeStamp: number,
   action: Action,
   data?: {
-    questionID: QuestionID,
     answer: Answer,
     note?: string
   }

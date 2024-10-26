@@ -26,8 +26,8 @@ export class QuestionDB {
     this.questionDS.set("A4", Q("A4:选是跳转到A6, 选否跳转到A5", "A6", "A7"))
     this.questionDS.set("A5", Q("A5:选是跳转到A7, 选否跳转到A6", "A7", "A6"))
     this.questionDS.set("A6", Q("A6:选是跳转到A7, 选否跳转到A7", "A7", "A7"))
-    this.questionDS.set("A7", Q("A7:你有鱼鱼蒸", "END", "END"))
-    this.questionDS.set("END", Q("A问卷结束", "END", "END"))
+    this.questionDS.set("A7", Q("A7:你有鱼鱼蒸", "END_A", "END_A"))
+    this.questionDS.set("END_A", Q("A问卷结束", "END_A", "END_A"))
 
     this.noticeDS.set("A2", "这里应该是A2到A4")
     this.noticeDS.set("A3", "这里应该是A2到A4")

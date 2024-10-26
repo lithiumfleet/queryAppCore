@@ -1,7 +1,7 @@
 import { ToBridgeBindable } from "../Bridge"
-import { QuestionID } from "../QuestionTypes"
+import { isEnumValue, QuestionID } from "../QuestionTypes"
 import { Answer, Note } from "../QuestionTypes"
-import { Notice, Question } from "./db/DBTypes"
+import { Notice, Question, QuestionnariaCtlToken } from "./db/DBTypes"
 
 @ToBridgeBindable
 export class QuestionnaireModel {
@@ -18,6 +18,15 @@ export class QuestionnaireModel {
     this.currentQid = qid
   }
 
+  setQuestionnaria(name: "A" | "B") {
+    console.info(`[Model] Setting current questionnaria to ${name}`)
+    if (name === "A") this.currentQid = QuestionnariaCtlToken.BEGA
+    else if (name === "B") this.currentQid = QuestionnariaCtlToken.BEGB
+    else {
+      throw Error(`[Model] "${name}" is not a name of questionnarias`)
+    }
+  }
+
   getNextQid(answer: Answer) {
     // 解析下一个QuestionID
     // @ts-ignore: bridge will init later
@@ -27,14 +36,14 @@ export class QuestionnaireModel {
     )
     if (!currentQuestion) {
       throw Error(
-        `[Model] Current Question ${this.currentQid} can not be found in QuestionDB`,
+        `[Model] Current Question "${this.currentQid}" can not be found in QuestionDB`,
       )
     }
 
     const nextQid = currentQuestion.jumpTable.get(answer)
     if (!nextQid) {
       throw Error(
-        `[Model] Current Question ID(${this.currentQid})'s jump table not match answer "${answer}"`,
+        `[Model] Current Question ID "${this.currentQid}" can not match answer "${answer}" in jump table`,
       )
     }
 
@@ -48,10 +57,15 @@ export class QuestionnaireModel {
   ) {
     // 加入历史, 设置并解析
     if (!this.currentQid) {
-      console.warn(
-        "[Model] currentQid is empty string or undefined. Redirecting to questionnaria A.",
+      throw Error(
+        "[Model] currentQid is empty string or undefined. Try calling setQuestionnaria before answer the questions.",
       )
-      this.currentQid = "BEG_A" as QuestionID
+    }
+    if (isEnumValue(QuestionnariaCtlToken, this.currentQid)) {
+      console.info(
+        `[Model] ${this.currentQid} is special token, will not commit to history`,
+      )
+      return
     }
     // @ts-ignore: bridge will init later
     this.bridge.call("History.commit", time, this.currentQid, answer, note)
@@ -69,7 +83,7 @@ export class QuestionnaireModel {
     )
     if (!currentQuestion) {
       throw Error(
-        `[Model] Current Question ${this.currentQid} can not be found in QuestionDB`,
+        `[Model] Current Question "${this.currentQid}" can not be found in QuestionDB`,
       )
     }
     // @ts-ignore: bridge will init later

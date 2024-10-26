@@ -3,9 +3,11 @@ export type QuestionID = string
 export enum Action {
   Answer = "Answer",
   Undo = "Undo",
+  GetQuestionnariaA = "GetQuestionnariaA",
+  GetQuestionnariaB = "GetQuestionnariaB",
 }
 
-function isEnumValue<T extends object>(
+export function isEnumValue<T extends object>(
   enumObj: T,
   value: unknown,
 ): value is T[keyof T] {
