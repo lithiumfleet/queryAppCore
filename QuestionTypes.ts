@@ -30,6 +30,7 @@ export function parseEnumValue<T extends object>(
 export enum Answer {
   False = "False",
   True = "True",
+  NoteOnly = "NoteOnly",
 }
 
 export type Note = string

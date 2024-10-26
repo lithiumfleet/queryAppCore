@@ -15,9 +15,14 @@ export class Poster {
   syncRender() {
     // 拉取当前问题和历史, 发送到渲染进程
     // @ts-ignore: bridge will init later
-    // Note: currentNotice: Notice | undefined
-    const { currentQid, currentQuestion, currentNotice } = this.bridge.call(
-      "QuestionnaireModel.getCurrentQuestionAndNotice",
+    const { currentQid } = this.bridge.call("QuestionnaireModel.getCurrentQid")
+    if (!currentQid) {
+      throw Error(`[Poster] Current question id is ${currentQid}`)
+    }
+    // @ts-ignore: bridge will init later
+    const { currentQuestion, currentNotice } = this.bridge.call(
+      "QuestionDB.getQuestionAndNotice",
+      currentQid,
     )
     // @ts-ignore: bridge will init later
     const currentHistory = this.bridge.call("History.getCurrentHistory")

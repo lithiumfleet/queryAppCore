@@ -1,11 +1,15 @@
 import { ToBridgeBindable } from "../Bridge"
 import { isEnumValue, QuestionID } from "../QuestionTypes"
 import { Answer, Note } from "../QuestionTypes"
-import { Notice, Question, QuestionnarieCtlToken } from "./db/DBTypes"
+import { Question, QuestionnarieCtlToken } from "./db/DBTypes"
 
 @ToBridgeBindable
 export class QuestionnaireModel {
   private currentQid: QuestionID | undefined = undefined
+
+  getCurrentQid() {
+    return { currentQid: this.currentQid }
+  }
 
   setCurrentQid(qid: QuestionID | undefined) {
     // 设置currentQis到下一个Qid
@@ -42,6 +46,11 @@ export class QuestionnaireModel {
 
     const nextQid = currentQuestion.jumpTable.get(answer)
     if (!nextQid) {
+      if (answer === Answer.NoteOnly) {
+        throw Error(
+          `[Model] Answer is marked as "NoteOnly" and Current Question "${this.currentQid}" doesn't have "NoteOnly" in jump table. Did you set it?`,
+        )
+      }
       throw Error(
         `[Model] Current Question ID "${this.currentQid}" can not match answer "${answer}" in jump table`,
       )
@@ -67,30 +76,13 @@ export class QuestionnaireModel {
       )
       return
     }
+    if (answer === Answer.NoteOnly && !note) {
+      throw Error("[Model] Answer is marked as 'NoteOnly' while note is empty.")
+    }
     // @ts-ignore: bridge will init later
     this.bridge.call("History.commit", time, this.currentQid, answer, note)
     console.info(
-      `[Model] Commit to history: ${time}\t${this.currentQid}\t${answer}\t${note}`,
+      `[Model] Commit to history:\t${time}\t${this.currentQid}\t${answer}\t${note}`,
     )
-  }
-
-  getCurrentQuestionAndNotice() {
-    // 给Poster调用
-    // @ts-ignore: bridge will init later
-    const currentQuestion: Question | undefined = this.bridge.call(
-      "QuestionDB.getQuestion",
-      this.currentQid,
-    )
-    if (!currentQuestion) {
-      throw Error(
-        `[Model] Current Question "${this.currentQid}" can not be found in QuestionDB`,
-      )
-    }
-    // @ts-ignore: bridge will init later
-    const currentNotice: Notice | undefined = this.bridge.call(
-      "QuestionDB.getNotice",
-      this.currentQid,
-    )
-    return { currentQid: this.currentQid, currentQuestion, currentNotice }
   }
 }

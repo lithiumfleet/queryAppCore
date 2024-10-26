@@ -15,7 +15,7 @@ export class History {
     // 向history提交回答
     this.history.push(time, qid, answer, note)
     console.info(
-      `[History] History append one piece: ${time}\t${qid}\t${answer}\t${note}`,
+      `[History] History append one piece:\t${time}\t${qid}\t${answer}\t${note}`,
     )
   }
 
