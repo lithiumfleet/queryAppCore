@@ -1,7 +1,12 @@
 import { ToBridgeBindable } from "../Bridge"
-import { isEnumValue, QuestionID } from "../QuestionTypes"
-import { Answer, Note } from "../QuestionTypes"
-import { Question, QuestionnarieCtlToken } from "./db/DBTypes"
+import {
+  isEnumValue,
+  QuestionID,
+  Answer,
+  Note,
+  Question,
+  QuestionnarieCtlToken,
+} from "../Types"
 
 @ToBridgeBindable
 export class QuestionnaireModel {

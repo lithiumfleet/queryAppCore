@@ -1,4 +1,4 @@
-import { Action, QuestionID } from "./QuestionTypes"
+import { Action, QuestionID } from "./Types"
 import { ToBridgeBindable } from "./Bridge"
 import {
   RawUserInput,
@@ -41,22 +41,22 @@ export class Controller {
         break
 
       case Action.Answer:
-        if (!userInput.data) {
-          throw Error("[Model] userInput.data is undefined.")
+        if (!userInput.answer && !userInput.note) {
+          throw Error("[Model] userInput not carry any answer")
         }
         // Save to history
         // @ts-ignore: bridge will init later
         this.bridge.call(
           "QuestionnaireModel.processCommit",
           userInput.timeStamp,
-          userInput.data.answer,
-          userInput.data.note,
+          userInput.answer,
+          userInput.note,
         )
         // Get next question id
         // @ts-ignore: bridge will init later
         nextQid = this.bridge.call(
           "QuestionnaireModel.getNextQid",
-          userInput.data.answer,
+          userInput.answer,
         )
         // Set next question id
         // @ts-ignore: bridge will init later

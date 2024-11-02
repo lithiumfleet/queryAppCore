@@ -1,5 +1,5 @@
 import { HistoryNode } from "./HistoryNode"
-import { QuestionID, Answer, Note } from "../../QuestionTypes"
+import { QuestionID, Answer, Note } from "../../Types"
 
 export class HistoryStack {
   private items: HistoryNode[] = []

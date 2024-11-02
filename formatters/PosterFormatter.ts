@@ -1,14 +1,14 @@
 // This formatter belongs to Poster
-import { Notice } from "../model/db/DBTypes"
 import { HistoryNode } from "../history/stack/HistoryNode"
-import { QuestionID } from "../QuestionTypes"
+import { QuestionID, Notice, SuperNotice } from "../Types"
 
 type RawFontInfo = {
   currentQuestion: {
     qid: QuestionID
     content: string
   }
-  currentNotice: Notice | undefined
+  currentNotice?: Notice
+  currentSuperNotice?: SuperNotice
   currentHistory: HistoryNode[]
 }
 
@@ -25,6 +25,7 @@ type FontInfo = {
     content: string
   }
   currentNotice?: string
+  currentSuperNotice?: string
   currentHistory: FontHistory[]
 }
 
@@ -46,6 +47,7 @@ export class PostFormatter {
         content: rawFontInfo.currentQuestion.content,
       },
       currentNotice: rawFontInfo.currentNotice,
+      currentSuperNotice: rawFontInfo.currentSuperNotice,
       currentHistory,
     }
   }

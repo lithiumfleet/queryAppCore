@@ -11,11 +11,9 @@ Formatters, or you can say these are Protrol Adapters.
 ```javascript
 {
   timeStamp: number,
-  action: string, // At QuestionTypes.ts
-  data?: {
-    answer: string, // At QuestionTypes.ts
-    note?: string
-  }
+  action: string,
+  answer?: string,
+  note?: string,
 }
 ```
 
@@ -33,10 +31,8 @@ ipcMain.on("user:input", (_, data) => {
 {
   timeStamp: number,
   action: Action,
-  data?: {
-    answer: Answer,
-    note?: string
-  }
+  answer?: Answer,
+  note?: Note
 }
 ```
 
@@ -46,9 +42,10 @@ ipcMain.on("user:input", (_, data) => {
 
 ```javascript
 {
-  currentQuestion: Question
-  currentNotice: Notice | undefined
-  currentHistory: HistoryNode[]
+  currentQuestion: Question,
+  currentNotice?: Notice,
+  currentSuperNotice?: SuperNotice,
+  currentHistory: HistoryNode[],
 }
 ```
 
@@ -61,13 +58,12 @@ ipcMain.on("user:input", (_, data) => {
     content: string,
   },
   currentNotice?: string,
-  currentHistory: [
-    {
-      timeStamp: string,
-      questionID: string,
-      answer: string
-    }
-  ]
+  currentSuperNotice?: string,
+  currentHistory: {
+    timeStamp: string,
+    questionID: string,
+    answer: string
+  }[]
 }
 ```
 

@@ -1,4 +1,4 @@
-import { Answer, QuestionID } from "../../QuestionTypes"
+import { Answer, QuestionID } from "../../Types"
 
 export type HistoryNode = {
   time: number

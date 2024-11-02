@@ -7,6 +7,32 @@ export enum Action {
   GetQuestionnarieB = "GetQuestionnarieB",
 }
 
+export enum Answer {
+  False = "False",
+  True = "True",
+  NoteOnly = "NoteOnly",
+}
+
+export type Note = string
+
+export type Notice = string
+
+export type SuperNotice = string
+
+export type Question = {
+  content: string
+  jumpTable: Map<Answer, QuestionID>
+}
+
+// Used in Model to mark begin/end of questionnaire
+export enum QuestionnarieCtlToken {
+  BEGA = "BEG_A",
+  ENDA = "END_A",
+  BEGB = "BEG_B",
+  ENDB = "END_B",
+}
+
+// Enum utils
 export function isEnumValue<T extends object>(
   enumObj: T,
   value: unknown,
@@ -26,11 +52,3 @@ export function parseEnumValue<T extends object>(
     )
   }
 }
-
-export enum Answer {
-  False = "False",
-  True = "True",
-  NoteOnly = "NoteOnly",
-}
-
-export type Note = string

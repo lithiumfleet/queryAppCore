@@ -1,5 +1,5 @@
 import { HistoryStack } from "./stack/HistoryStack"
-import { QuestionID, Answer, Note } from "../QuestionTypes"
+import { QuestionID, Answer, Note } from "../Types"
 import { ToBridgeBindable } from "../Bridge"
 
 @ToBridgeBindable
