@@ -20,7 +20,7 @@ Formatters, or you can say these are Protrol Adapters.
 Process with ipc in main process:
 
 ```typescript
-ipcMain.on("user:input", (_, data) => {
+ipcMain.on("user-input", (_, data: RawUserInput) => {
   controller.processUserInputs(data)
 })
 ```
@@ -62,7 +62,8 @@ ipcMain.on("user:input", (_, data) => {
   currentHistory: {
     timeStamp: string,
     questionID: string,
-    answer: string
+    answer: string,
+    note?: string,
   }[]
 }
 ```
@@ -71,5 +72,5 @@ This will be sent using webContents.
 
 ```typescript
 // in Poster.ts
-this.mainWindow.webContents.send("sync:font-info", fontInfo)
+this.mainWindow.webContents.send("sync-font-info", fontInfo)
 ```

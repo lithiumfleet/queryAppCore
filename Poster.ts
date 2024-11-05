@@ -19,11 +19,10 @@ export class Poster {
     if (!currentQid) {
       throw Error(`[Poster] Current question id is ${currentQid}`)
     }
-    // @ts-ignore: bridge will init later
-    const { currentQuestion, currentNotice } = this.bridge.call(
-      "QuestionDB.getQuestionAndNotice",
-      currentQid,
-    )
+    const { currentQuestion, currentNotice, currentSuperNotice } =
+      // @ts-ignore: bridge will init later
+      this.bridge.call("QuestionDB.getQuestionAndNotice", currentQid)
+
     // @ts-ignore: bridge will init later
     const currentHistory = this.bridge.call("History.getCurrentHistory")
 
@@ -32,6 +31,7 @@ export class Poster {
         qid: currentQid,
         content: currentQuestion.content,
       },
+      currentSuperNotice,
       currentNotice,
       currentHistory,
     })
@@ -41,7 +41,7 @@ export class Poster {
         `[Poster] Poster is not correctly inited, mainWindow is undefined`,
       )
     }
-    this.mainWindow.webContents.send("sync:font-info", fontInfo)
+    this.mainWindow.webContents.send("sync-font-info", fontInfo)
     console.info("[Poster] Finish sync\n")
   }
 }

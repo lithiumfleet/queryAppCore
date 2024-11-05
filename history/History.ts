@@ -35,4 +35,9 @@ export class History {
     console.info(`[History] Getting current history`)
     return this.history.getCurrentStack()
   }
+
+  resetHistory() {
+    console.info(`[History] Resetting history`)
+    this.history.reset()
+  }
 }

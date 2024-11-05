@@ -34,6 +34,8 @@ export class QuestionnaireModel {
     else {
       throw Error(`[Model] "${name}" is not a name of questionnaries`)
     }
+    // @ts-ignore: bridge will init later
+    this.bridge.call("History.resetHistory")
   }
 
   getNextQid(answer: Answer) {

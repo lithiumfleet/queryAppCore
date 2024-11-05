@@ -5,7 +5,7 @@ export class HistoryStack {
   private items: HistoryNode[] = []
 
   getCurrentStack() {
-    return this.items
+    return [...this.items]
   }
 
   push(
@@ -31,5 +31,9 @@ export class HistoryStack {
 
   get length() {
     return this.items.length
+  }
+
+  reset() {
+    this.items = []
   }
 }

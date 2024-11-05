@@ -1,12 +1,20 @@
 import { QuestionID } from "../../Types"
 import { ToBridgeBindable } from "../../Bridge"
-import { QuestionDS, NoticeDS, SuperNoticeDS } from "./DSinitializer"
+import { getAllDSinited } from "./initializer/DSFactory"
+import { QuestionDS, NoticeDS, SuperNoticeDS } from "./initializer/DS"
 
 @ToBridgeBindable
 export class QuestionDB {
-  private questionDS: QuestionDS = new QuestionDS()
-  private noticeDS: NoticeDS = new NoticeDS()
-  private superNoticeDS: SuperNoticeDS = new SuperNoticeDS()
+  private questionDS: QuestionDS
+  private noticeDS: NoticeDS
+  private superNoticeDS: SuperNoticeDS
+
+  constructor() {
+    const { questionDS, noticeDS, superNoticeDS } = getAllDSinited()
+    this.questionDS = questionDS
+    this.noticeDS = noticeDS
+    this.superNoticeDS = superNoticeDS
+  }
 
   getQuestion(qid: QuestionID) {
     return this.questionDS.get(qid)

@@ -70,7 +70,7 @@ export class Controller {
     this.syncRender()
   }
 
-  undoLastCommit() {
+  private undoLastCommit() {
     // 撤销上次输入, 回到上一个问题, 同步Model
     // @ts-ignore: bridge will init later
     const qid: QuestionID | undefined = this.bridge.call("History.undo")
