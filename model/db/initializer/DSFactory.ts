@@ -2,6 +2,7 @@ import { QuestionDS, NoticeDS, SuperNoticeDS } from "./DS"
 import { Answer, QuestionID, Question } from "../../../Types"
 import * as fs from "fs"
 import { parse } from "csv-parse"
+import QuestionsCSVFile from "../../../../../../resources/questions.csv?asset"
 
 type MapperFunction<T> = (line: string[]) => T
 
@@ -37,9 +38,9 @@ const mapper = (line: string[]): CSVLine => ({
   unit: line[6] || "",
 })
 
-function NOQ(content: string, nextQid: QuestionID) {
+function NOQ(content: string, nextQid: QuestionID, unit: string) {
   return {
-    content,
+    content: content + "%%" + unit,
     jumpTable: new Map([[Answer.NoteOnly, nextQid]]),
   } as Question
 }
@@ -68,10 +69,11 @@ export function getAllDSinited() {
 
   function handleCSVLine(line: CSVLine) {
     if (isSuperNotice(line)) {
-      superNoticeDS.set(line.qid, line.content + "<SP>" + line.notice)
+      superNoticeDS.set(line.qid, line.content)
+      superNoticeDS.set(line.qid, line.notice)
     } else {
       if (isNoteOnly(line)) {
-        questionDS.set(line.qid, NOQ(line.content, line.noteJump))
+        questionDS.set(line.qid, NOQ(line.content, line.noteJump, line.unit))
         noticeDS.set(line.qid, line.notice)
       } else {
         questionDS.set(
@@ -84,8 +86,7 @@ export function getAllDSinited() {
   }
 
   ;(async () => {
-    const csvFilePath =
-      "src/main/questionnarie/model/db/initializer/questions.csv"
+    const csvFilePath = QuestionsCSVFile
     for await (const line of csvLineGenerator(csvFilePath, mapper)) {
       handleCSVLine(line)
     }
